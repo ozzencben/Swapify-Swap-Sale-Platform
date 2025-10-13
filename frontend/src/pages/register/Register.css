@@ -1,0 +1,106 @@
+.register-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-form {
+  margin: 25px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(600px, 80%);
+}
+
+.auth-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #ccc;
+  padding: 0 10px;
+}
+
+.auth-item.invalid {
+  border-bottom: 2px solid #f87171;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  background-color: none;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.auth-btn {
+  font-size: 17px;
+  background: transparent;
+  border: none;
+  padding: 1em 1.5em;
+  color: var(--black);
+  text-transform: uppercase;
+  position: relative;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.auth-btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--black);
+  transition: 0.5s ease;
+}
+
+.auth-btn:hover {
+  color: var(--white);
+  transition-delay: 0.5s;
+}
+
+.auth-btn:hover::before {
+  width: 100%;
+}
+
+.auth-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: var(--black);
+  transition: 0.4s ease;
+  z-index: -1;
+}
+
+.auth-btn:hover::after {
+  height: 100%;
+  transition-delay: 0.4s;
+  color: var(--white);
+}
+
+.auth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-prompt a {
+  font-weight: bold;
+  color: var(--black);
+}
