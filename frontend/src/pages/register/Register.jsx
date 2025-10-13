@@ -3,6 +3,7 @@ import { useCallback, useContext, useState } from "react";
 import { RxEyeClosed } from "react-icons/rx";
 import { TfiEye } from "react-icons/tfi";
 import { toast } from "sonner";
+import Loader from "../../components/loader/Loader";
 import AuthContext from "../../context/auth/AuthContext";
 import { checkEmail, checkUsername } from "../../services/auth";
 import "./Register.css";
@@ -10,6 +11,7 @@ import "./Register.css";
 const Register = () => {
   const { register, navigate } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(false);
   const [emailAvailable, setEmailAvailable] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [formData, setFormData] = useState({
@@ -100,13 +102,18 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
+      setLoading(true);
       const res = await register(formData);
       console.log("register result", res);
       navigate("/login");
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="register-container">
@@ -210,10 +217,10 @@ const Register = () => {
           disabled={!isFormValid()}
           onClick={handleRegister}
         >
-          <span className="spn2" >Sign Up</span>
+          <span className="spn2">Sign Up</span>
         </button>
       </div>
-      <div className="auth-prompt" >
+      <div className="auth-prompt">
         <p>
           Already have an account? <a href="/login">Login</a>
         </p>

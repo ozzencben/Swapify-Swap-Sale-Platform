@@ -2,12 +2,14 @@ import { useContext, useState } from "react";
 import { RxEyeClosed } from "react-icons/rx";
 import { TfiEye } from "react-icons/tfi";
 import { toast } from "sonner";
+import Loader from "../../components/loader/Loader";
 import AuthContext from "../../context/auth/AuthContext";
 import "./Login.css";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,13 +24,18 @@ const Login = () => {
       return;
     }
     try {
+      setLoading(true);
       await login(email, password);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const isDaisable = !email || !password;
+
+  if (loading) return <Loader />;
 
   return (
     <div className="login-container">

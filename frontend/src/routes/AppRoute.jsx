@@ -1,20 +1,29 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
-import Home from "../pages/home/Home";
+import Navbar from "../components/navbar/Navbar";
+
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 
-const AppRoute = () => {
-  // const hidingRoutes = ["/login", "/register"];
+import AddProduct from "../pages/add-product/AddProduct";
+import Home from "../pages/home/Home";
 
-  // if (hidingRoutes.includes(window.location.pathname)) return null;
+const AppRoute = () => {
+  const location = useLocation();
+  const hidingRoutes = ["/login", "/register"];
+
+  const hideNavbar = hidingRoutes.includes(location.pathname);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
+    <>
+      {!hideNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/add-product" element={<AddProduct />} />
+      </Routes>
+    </>
   );
 };
 

@@ -1,0 +1,177 @@
+.add-product-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 25px 0;
+}
+
+.add-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(600px, 100%);
+}
+
+.add-product-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.tips {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  color: #555;
+}
+
+.warning-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.add-product-input-box,
+.category-value-row,
+.condition-value-row {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.add-product-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  background-color: none;
+  outline: none;
+}
+
+.category-value-row,
+.condition-value-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position: relative;
+}
+
+.dropdown-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 300ms ease;
+  padding: 0 5px;
+}
+
+.category-dropdown,
+.condition-dropdown {
+  width: min(600px, 100%);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 300ms ease;
+}
+
+.category-dropdown.active,
+.condition-dropdown.active {
+  transform: scaleY(1);
+}
+
+.category-dropdown::-webkit-scrollbar,
+.condition-dropdown::-webkit-scrollbar {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+.category-dropdown ul,
+.condition-dropdown ul {
+  width: 100%;
+}
+
+.category-dropdown li,
+.condition-dropdown li {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 300ms ease;
+}
+
+.category-dropdown li:hover,
+.condition-dropdown li:hover {
+  background-color: #f5f5f5;
+}
+
+.tradeable-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.container {
+  cursor: pointer;
+}
+
+.container input {
+  display: none;
+}
+
+.container svg {
+  overflow: visible;
+}
+
+.path {
+  fill: none;
+  stroke: var(--black);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.container input:checked ~ svg .path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+}
+
+.add-product-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--black);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+.add-product-button:hover {
+  background-color: var(--white);
+  color: var(--black);
+}

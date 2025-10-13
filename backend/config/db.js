@@ -1,5 +1,5 @@
-require("dotenv").config();
-const pkg = require("pg");
+require('dotenv').config();
+const pkg = require('pg');
 
 const { Pool } = pkg;
 
@@ -9,7 +9,7 @@ const pool = new Pool({
 
 pool
   .connect()
-  .then(() => console.log("Connected to Database"))
+  .then(() => console.log('Connected to Database'))
   .catch((err) => console.log(err));
 
-module.exports = pool;
+module.exports = { pool };
