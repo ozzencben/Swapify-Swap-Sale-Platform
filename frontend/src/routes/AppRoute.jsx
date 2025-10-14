@@ -6,7 +6,10 @@ import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 
 import AddProduct from "../pages/add-product/AddProduct";
+import EditProduct from "../pages/edit-product/EditProduct";
 import Home from "../pages/home/Home";
+import Notification from "../pages/notification/Notification";
+import ProductDetail from "../pages/product-detail/ProductDetail";
 
 const AppRoute = () => {
   const location = useLocation();
@@ -22,6 +25,9 @@ const AppRoute = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/add-product" element={<AddProduct />} />
+        <Route path="/product-detail/:id" element={<ProductDetail />} />
+        <Route path="/notification" element={<Notification />} />
+        <Route path="/edit-product/:id" element={<EditProduct />} />
       </Routes>
     </>
   );

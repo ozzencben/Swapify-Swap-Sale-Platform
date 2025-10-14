@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import api from "../../api/api";
+import { getUserNotifications } from "../../services/notification";
 import { socket } from "../../socket";
 import AuthContext from "./AuthContext";
 
@@ -18,31 +19,64 @@ const AuthProvider = ({ children }) => {
     return storedAccessToken || null;
   });
 
-  // Socket bağlantısı ve notification listener
-  useEffect(() => {
-    if (user?.id) {
-      // Socket bağlantısını aç
-      socket.connect();
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
 
-      // Backend'e kullanıcıyı tanıt
+  // -------------------- SOCKET BAĞLANTI & NOTIFICATIONS --------------------
+  useEffect(() => {
+    if (!user?.id) return;
+
+    // Socket bağlan
+    if (!socket.connected) socket.connect();
+
+    // Kullanıcıyı socket'e register et
+    const registerUser = () => {
       socket.emit("register", user.id);
       console.log("✅ Socket registered:", user.id);
+    };
 
-      // Bildirimleri dinle
-      socket.on("notification", (data) => {
-        console.log("📩 New Notification:", data);
-        toast.success(data.message);
-      });
+    registerUser();
 
-      // Disconnect veya unmount durumunda temizle
-      return () => {
-        socket.off("notification");
-        if (socket.connected) socket.disconnect();
-        console.log("❌ Socket disconnected");
-      };
-    }
+    // Reconnect durumunda tekrar register et
+    socket.on("connect", registerUser);
+
+    // Yeni bildirim geldiğinde çalışır
+    socket.on("notification", (data) => {
+      console.log("📩 New Notification:", data);
+      toast.success(data.message);
+
+      // Yeni bildirim geldiğinde sayacı +1 yap
+      setNotificationCount((prev) => prev + 1);
+    });
+
+    // Temizlik
+    return () => {
+      socket.off("notification");
+      socket.off("connect", registerUser);
+    };
   }, [user]);
 
+  // -------------------- NOTIFICATION COUNT FETCH --------------------
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      if (!user?.id) return;
+
+      try {
+        setLoadingNotifications(true);
+        const notifications = await getUserNotifications(user.id);
+        const unread = notifications.filter((n) => !n.is_read).length;
+        setNotificationCount(unread);
+      } catch (error) {
+        console.error("Error fetching notification count:", error);
+      } finally {
+        setLoadingNotifications(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [user]);
+
+  // -------------------- LOGIN --------------------
   const login = async (email, password) => {
     if (!email || !password) {
       toast.error("Please enter email and password");
@@ -53,7 +87,6 @@ const AuthProvider = ({ children }) => {
       const res = await api.post("/users/login", { email, password });
       const { accessToken, refreshToken, user } = res.data;
 
-      // State ve localStorage güncelle
       setUser(user);
       setAccessToken(accessToken);
       localStorage.setItem("user", JSON.stringify(user));
@@ -70,6 +103,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // -------------------- REGISTER --------------------
   const register = async (formData) => {
     const { email, password, firstname, lastname, username } = formData;
     if (!email || !password || !firstname || !lastname || !username) {
@@ -97,10 +131,12 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // -------------------- LOGOUT --------------------
   const logout = async () => {
     try {
       setAccessToken(null);
       setUser(null);
+      setNotificationCount(0);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
@@ -116,7 +152,18 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, accessToken, login, register, logout, navigate }}
+      value={{
+        user,
+        setUser,
+        accessToken,
+        login,
+        register,
+        logout,
+        navigate,
+        notificationCount,
+        setNotificationCount,
+        loadingNotifications,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { toast } from "sonner"; // başarı/hata bildirimi
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { PiWarningCircleLight } from "react-icons/pi";
+import { toast } from "sonner"; // başarı/hata bildirimi
 import CustomImagePicker from "../../components/image-picker/CustomImagePicker";
 import Loader from "../../components/loader/Loader";
 import { getAllCategories } from "../../services/category";
-import { createProduct } from "../../services/product"; 
+import { createProduct } from "../../services/product";
 import "./AddProduct.css";
 
 const AddProduct = () => {
@@ -24,7 +24,7 @@ const AddProduct = () => {
   });
   const [selectedCondition, setSelectedCondition] = useState("");
   const [isTradeable, setIsTradeable] = useState(false);
-  const [productImages, setProductImages] = useState([]); 
+  const [productImages, setProductImages] = useState([]); // <— Görseller burada tutuluyor
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(false);
 
@@ -51,7 +51,7 @@ const AddProduct = () => {
 
   // Görsel seçimi
   const handleImageSelect = (files) => {
-    // Tek veya çoklu seçimi destekler
+    if (!files || files.length === 0) return;
     setProductImages(Array.isArray(files) ? files : [files]);
   };
 
@@ -78,9 +78,11 @@ const AddProduct = () => {
         category_id: selectedCategory.id,
         condition: selectedCondition,
         is_tradeable: isTradeable,
-        status: "active", 
+        status: "active",
         images: productImages,
       };
+
+      console.log("📦 Product data being sent:", productData);
 
       const res = await createProduct(productData);
 
@@ -258,7 +260,11 @@ const AddProduct = () => {
             <PiWarningCircleLight className="warning-icon" />
             <p>Please select a product image</p>
           </div>
-          <CustomImagePicker onImageSelect={handleImageSelect} result={result} />
+          {/* 🔧 Prop adı DÜZELTİLDİ */}
+          <CustomImagePicker
+            onImagesSelect={handleImageSelect}
+            result={result}
+          />
         </div>
 
         {/* Tradeable */}

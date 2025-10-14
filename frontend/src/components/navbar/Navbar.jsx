@@ -6,7 +6,7 @@ import AuthContext from "../../context/auth/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { logout, navigate } = useContext(AuthContext);
+  const { logout, navigate, notificationCount } = useContext(AuthContext);
 
   const [showRightMenu, setShowRightMenu] = useState(false);
   const [openOverlay, setOpenOverlay] = useState(false);
@@ -19,19 +19,16 @@ const Navbar = () => {
   const closeAllMenu = (path) => {
     setOpenOverlay(false);
     setShowRightMenu(false);
-    if (path) {
-      navigate(path);
-    }
+    if (path) navigate(path);
   };
 
   return (
     <div className="navbar-container">
-      <div className="navbar-logo" onClick={() => closeAllMenu("/home")}>
+      <div className="navbar-logo" onClick={() => closeAllMenu("/")}>
         <h2>SWAPIFY</h2>
       </div>
 
-      {/* -------- */}
-
+      {/* -------- Mobil Menü -------- */}
       <label className="hamburger">
         <input
           type="checkbox"
@@ -46,32 +43,43 @@ const Navbar = () => {
           <path className="line" d="M7 16 27 16"></path>
         </svg>
       </label>
+
       <div className={`navbar-right-menu ${showRightMenu ? "open" : ""}`}>
         <ul>
-          <li onClick={closeAllMenu}>Home</li>
-          <li onClick={closeAllMenu}>Home</li>
-          <li onClick={closeAllMenu}>Home</li>
+          <li onClick={() => closeAllMenu("/")}>Home</li>
+          <li onClick={() => closeAllMenu("/products")}>Products</li>
+          <li onClick={() => closeAllMenu("/contact")}>Contact</li>
         </ul>
+
         <div className="navbar-line"></div>
+
         <div className="right-menu-buttons">
+          <div className="radio-button" onClick={() => navigate("/settings")}>
+            <CiSettings className="radio-button-icon" />
+          </div>
+
+          <div
+            className="radio-button notification-btn"
+            onClick={() => navigate("/notification")}
+          >
+            <IoIosNotificationsOutline className="radio-button-icon" />
+            {notificationCount > 0 && (
+              <span className="notification-badge">{notificationCount}</span>
+            )}
+          </div>
+
           <div className="radio-button" onClick={logout}>
             <CiLogout className="radio-button-icon" />
           </div>
-          <div className="radio-button" onClick={logout}>
-            <CiSettings className="radio-button-icon" />
-          </div>
-          <div className="radio-button" onClick={logout}>
-            <IoIosNotificationsOutline className="radio-button-icon" />
-          </div>
         </div>
       </div>
+
       <div
         onClick={closeAllMenu}
         className={`navbar-overlay ${openOverlay ? "open" : ""}`}
       ></div>
 
-      {/* -------- */}
-
+      {/* -------- Masaüstü Menü -------- */}
       <div className="navbar-routes">
         <a href="/">Home</a>
         <a href="#">Product</a>
@@ -86,11 +94,23 @@ const Navbar = () => {
         >
           <RiAddFill className="radio-button-icon" />
         </button>
-        <button className="radio-button" onClick={() => {}}>
+
+        <button
+          className="radio-button notification-btn"
+          onClick={() => navigate("/notification")}
+        >
           <RiNotification3Line className="radio-button-icon" />
+          {notificationCount > 0 && (
+            <span className="notification-badge">{notificationCount}</span>
+          )}
         </button>
-        <button className="radio-button" onClick={() => {}}>
+
+        <button className="radio-button" onClick={() => navigate("/profile")}>
           <RiUser4Line className="radio-button-icon" />
+        </button>
+
+        <button className="radio-button" onClick={logout}>
+          <CiLogout className="radio-button-icon" />
         </button>
       </div>
     </div>

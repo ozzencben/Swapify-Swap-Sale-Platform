@@ -8,8 +8,12 @@ const { pool } = require('../config/db');
 
 // --------------------------- CREATE PRODUCT ---------------------------
 router.post('/create', auth, upload.array('images', 10), async (req, res, next) => {
+  console.log('➡️ USER ID:', req.user.id);
+  console.log('➡️ BODY:', req.body);
+  console.log('➡️ FILES:', req.files);
+
   const { title, description, price, category_id, condition, is_tradeable, status } = req.body;
-  const user_id = req.user.id;
+  const user_id = req.user.id; // ✅ auth middleware uyumlu
 
   try {
     const product = await pool.query(
@@ -31,7 +35,7 @@ router.post('/create', auth, upload.array('images', 10), async (req, res, next) 
         uploadResults.map((r, index) =>
           pool.query(
             'INSERT INTO product_images (product_id, image_url, is_primary) VALUES ($1, $2, $3)',
-            [product.rows[0].id, r.secure_url, index === 0], // ilk görsel primary
+            [product.rows[0].id, r.secure_url, index === 0],
           ),
         ),
       );
@@ -53,14 +57,14 @@ router.get('/', async (req, res, next) => {
     const { page = 1, limit = 20, category_id, user_id, tradeable, status, condition } = req.query;
     const offset = (page - 1) * limit;
 
-    // Tek sorguda ürün ve görselleri çek (N+1 problem çözümü)
     let query = `
       SELECT 
         p.*, 
-        json_agg(pi.image_url ORDER BY pi.is_primary DESC) AS images
+        COALESCE(json_agg(pi.image_url ORDER BY pi.is_primary DESC) FILTER (WHERE pi.image_url IS NOT NULL), '[]') AS images
       FROM products p
       LEFT JOIN product_images pi ON pi.product_id = p.id
     `;
+
     let conditions = [];
     let params = [];
 
@@ -74,7 +78,7 @@ router.get('/', async (req, res, next) => {
     }
     if (tradeable) {
       conditions.push(`p.is_tradeable = $${params.length + 1}`);
-      params.push(tradeable);
+      params.push(tradeable === 'true' || tradeable === true);
     }
     if (status) {
       conditions.push(`p.status = $${params.length + 1}`);
@@ -85,7 +89,9 @@ router.get('/', async (req, res, next) => {
       params.push(condition);
     }
 
-    if (conditions.length > 0) query += ' WHERE ' + conditions.join(' AND ');
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
+    }
 
     query += ` GROUP BY p.id ORDER BY p.created_at DESC LIMIT $${params.length + 1} OFFSET $${
       params.length + 2
@@ -102,6 +108,7 @@ router.get('/', async (req, res, next) => {
       limit: Number(limit),
     });
   } catch (error) {
+    console.error(error);
     next(error);
   }
 });
@@ -163,17 +170,12 @@ router.put('/update/:id', auth, upload.array('images', 10), async (req, res, nex
         uploadResults.map((urlObj) =>
           pool.query(
             'INSERT INTO product_images (product_id, image_url, is_primary) VALUES ($1, $2, $3)',
-            [
-              id,
-              urlObj.secure_url,
-              false, // yeni eklenenler primary değil
-            ],
+            [id, urlObj.secure_url, false],
           ),
         ),
       );
     }
 
-    // Güncel ürün ve görselleri tek sorguda çek
     const productWithImages = await pool.query(
       `SELECT p.*, json_agg(pi.image_url ORDER BY pi.is_primary DESC) AS images
        FROM products p

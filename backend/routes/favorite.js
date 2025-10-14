@@ -10,46 +10,76 @@ router.post('/', auth, async (req, res, next) => {
     const { product_id } = req.body;
     const user_id = req.user.id;
 
-    if (!product_id) return res.status(400).json({ success: false, message: 'Product ID is required' });
-
-    // Aynı favori varsa hata dön
-    const exists = await pool.query(
-      'SELECT 1 FROM favorites WHERE user_id = $1 AND product_id = $2',
-      [user_id, product_id]
-    );
-    if (exists.rows.length > 0) return res.status(400).json({ success: false, message: 'Already favorited' });
-
-    // Favoriye ekle
-    const result = await pool.query(
-      'INSERT INTO favorites (user_id, product_id) VALUES ($1, $2) RETURNING *',
-      [user_id, product_id]
-    );
-
-    // 🔹 Notification
-    const productRes = await pool.query('SELECT user_id, title FROM products WHERE id=$1', [product_id]);
-    if (productRes.rows.length > 0) {
-      const productOwnerId = productRes.rows[0].user_id;
-      const productTitle = productRes.rows[0].title;
-      if (productOwnerId !== user_id) { // Kendi ürününü favorileme bildirimini engelle
-        const message = `Your product "${productTitle}" was favorited by a user.`;
-        const newNotification = await pool.query(
-          `INSERT INTO notifications (sender_id, receiver_id, type, message, related_product_id)
-           VALUES ($1, $2, 'favorite', $3, $4) RETURNING *`,
-          [user_id, productOwnerId, message, product_id]
-        );
-        const io = getIO();
-        const targetSocketId = onlineUsers.get(String(productOwnerId));
-        if (targetSocketId) io.to(targetSocketId).emit('notification', newNotification.rows[0]);
-      }
+    if (!product_id) {
+      return res.status(400).json({ success: false, message: 'Product ID is required' });
     }
 
-    res.status(201).json({
+    // Ürün var mı kontrol et
+    const productRes = await pool.query('SELECT user_id, title FROM products WHERE id = $1', [
+      product_id,
+    ]);
+
+    if (productRes.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    const productOwnerId = productRes.rows[0].user_id;
+    const productTitle = productRes.rows[0].title;
+
+    // Kullanıcı kendi ürününü favorileyemez
+    if (productOwnerId === user_id) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'You cannot favorite your own product' });
+    }
+
+    // Zaten favorilenmiş mi?
+    const exists = await pool.query(
+      'SELECT 1 FROM favorites WHERE user_id = $1 AND product_id = $2',
+      [user_id, product_id],
+    );
+
+    if (exists.rows.length > 0) {
+      return res.status(400).json({ success: false, message: 'Already favorited' });
+    }
+
+    // Favoriye ekle
+    const favoriteResult = await pool.query(
+      'INSERT INTO favorites (user_id, product_id) VALUES ($1, $2) RETURNING *',
+      [user_id, product_id],
+    );
+
+    // Bildirim oluştur
+    const message = `Your product "${productTitle}" was favorited by `;
+
+    let notificationResult = null;
+    try {
+      notificationResult = await pool.query(
+        `INSERT INTO notifications (sender_id, receiver_id, type, content, product_id)
+         VALUES ($1, $2, 'favorite', $3, $4) RETURNING *`,
+        [user_id, productOwnerId, message, product_id],
+      );
+
+      // Socket üzerinden gönder
+      const io = getIO();
+      const targetSocketId = onlineUsers.get(String(productOwnerId));
+      if (targetSocketId) {
+        io.to(targetSocketId).emit('notification', notificationResult.rows[0]);
+      }
+    } catch (err) {
+      console.warn('Notification/socket error (ignored, favorite still added):', err);
+    }
+
+    // Başarılı response
+    return res.status(201).json({
       success: true,
       message: 'Product added to favorites',
-      favorite: result.rows[0],
+      favorite: favoriteResult.rows[0],
+      notification: notificationResult?.rows?.[0] || null,
     });
   } catch (error) {
-    next(error);
+    console.error('Error in POST /favorites:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 
@@ -61,9 +91,10 @@ router.delete('/:product_id', auth, async (req, res, next) => {
 
     const result = await pool.query(
       'DELETE FROM favorites WHERE user_id = $1 AND product_id = $2 RETURNING *',
-      [user_id, product_id]
+      [user_id, product_id],
     );
-    if (result.rows.length === 0) return res.status(404).json({ success: false, message: 'Favorite not found' });
+    if (result.rows.length === 0)
+      return res.status(404).json({ success: false, message: 'Favorite not found' });
 
     res.status(200).json({
       success: true,
@@ -90,7 +121,7 @@ router.get('/', auth, async (req, res, next) => {
       GROUP BY p.id
       ORDER BY f.created_at DESC
       `,
-      [user_id]
+      [user_id],
     );
     res.status(200).json({
       success: true,
@@ -109,7 +140,7 @@ router.get('/check/:product_id', auth, async (req, res, next) => {
     const user_id = req.user.id;
     const result = await pool.query(
       'SELECT 1 FROM favorites WHERE user_id = $1 AND product_id = $2',
-      [user_id, product_id]
+      [user_id, product_id],
     );
     res.status(200).json({
       success: true,
