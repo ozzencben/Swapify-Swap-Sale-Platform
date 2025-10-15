@@ -10,6 +10,9 @@ import EditProduct from "../pages/edit-product/EditProduct";
 import Home from "../pages/home/Home";
 import Notification from "../pages/notification/Notification";
 import ProductDetail from "../pages/product-detail/ProductDetail";
+import MyProfile from "../pages/profile/myProfile/MyProfile";
+import EditProfile from "../pages/profile/edit-profile/EditProfile";
+import OtherUserProfile from "../pages/profile/OtherUserProfile/OtherUserProfile";
 
 const AppRoute = () => {
   const location = useLocation();
@@ -28,6 +31,9 @@ const AppRoute = () => {
         <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/edit-product/:id" element={<EditProduct />} />
+        <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/profile/:id" element={<OtherUserProfile />} />
       </Routes>
     </>
   );

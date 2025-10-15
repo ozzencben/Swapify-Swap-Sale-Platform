@@ -105,7 +105,7 @@ const Navbar = () => {
           )}
         </button>
 
-        <button className="radio-button" onClick={() => navigate("/profile")}>
+        <button className="radio-button" onClick={() => navigate("/my-profile")}>
           <RiUser4Line className="radio-button-icon" />
         </button>
 

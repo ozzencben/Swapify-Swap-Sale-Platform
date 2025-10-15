@@ -268,7 +268,7 @@ const AddProduct = () => {
         </div>
 
         {/* Tradeable */}
-        <div className="tradeable-container">
+        <div className="select-tradeable-container">
           <label className="container">
             <input
               type="checkbox"

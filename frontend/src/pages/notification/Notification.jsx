@@ -14,7 +14,7 @@ import { socket } from "../../socket";
 import "./Notification.css";
 
 const Notification = () => {
-  const { user, navigate } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +46,6 @@ const Notification = () => {
     }
   };
 
-  console.log("notifications", notifications);
   useEffect(() => {
     fetchNotifications();
 
@@ -61,6 +60,7 @@ const Notification = () => {
     return () => {
       socket.off("notification");
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
   const handleMarkAsRead = async (id) => {

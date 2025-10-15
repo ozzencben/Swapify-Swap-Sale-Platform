@@ -1,0 +1,265 @@
+.edit-profile-container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ---- HEADINGS ---- */
+.profile-section h2,
+.address-section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+  border-bottom: 2px solid #111;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+/* ---- PROFILE SECTION ---- */
+.profile-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.profile-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.pp {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #111;
+  transition: transform 0.3s ease;
+}
+
+.pp:hover {
+  transform: scale(1.05);
+}
+
+.pp-box {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 2px dashed #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: #111;
+  background-color: #fafafa;
+}
+
+.upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-overlay:hover {
+  opacity: 1;
+}
+
+.upload-icon {
+  font-size: 24px;
+  color: #fff;
+}
+
+.profile-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.profile-fields input {
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+  color: #111;
+  font-size: 14px;
+}
+
+.profile-fields input:focus {
+  border-color: #111;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1);
+}
+
+.save-btn {
+  align-self: flex-end;
+  padding: 12px 24px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-btn:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+/* ---- ADDRESS SECTION ---- */
+.address-section {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.address-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.address-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fafafa;
+  transition: all 0.3s;
+}
+
+.address-form input:focus {
+  border-color: #111;
+  background-color: #fff;
+}
+
+.add-btn {
+  grid-column: span 2;
+  background-color: #111;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.add-btn:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+}
+
+/* ---- ADDRESS LIST ---- */
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.address-list h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+.address-card {
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+  padding: 18px 20px;
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.address-card:hover {
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.address-card p {
+  margin: 4px 0;
+  color: #222;
+  font-size: 14px;
+}
+
+.address-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.address-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.edit-btn {
+  background-color: #111;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background-color: #333;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.no-address {
+  font-style: italic;
+  color: #555;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .edit-profile-container {
+    padding: 20px;
+    margin: 20px;
+    box-shadow: none;
+  }
+
+  .profile-fields,
+  .address-form {
+    grid-template-columns: 1fr;
+  }
+
+  .save-btn,
+  .add-btn {
+    width: 100%;
+  }
+}

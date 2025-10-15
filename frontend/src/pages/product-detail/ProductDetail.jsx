@@ -15,6 +15,8 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const [productOwner, setProductOwner] = useState(null);
+  console.log("owner", productOwner);
+
   const [mainImage, setMainImage] = useState(null);
   const [modalImage, setModalImage] = useState(null);
 
@@ -90,11 +92,14 @@ const ProductDetail = () => {
         <h2 className="product-title">{product.title}</h2>
         <p className="product-description">{product.description}</p>
         <div className="owner-container">
-          <div className="user-profile-image">
-            {user && user.profile_image ? (
+          <div
+            className="user-profile-image"
+            onClick={() => navigate(`/profile/${productOwner.id}`)}
+          >
+            {productOwner && productOwner.profile_image ? (
               <img
-                src={user.profile_image}
-                alt={user.username}
+                src={productOwner.profile_image}
+                alt={productOwner.username}
                 className="profile-image"
                 loading="lazy"
               />
@@ -105,11 +110,13 @@ const ProductDetail = () => {
             )}
           </div>
           <div className="user-name">
-            <div>
+            <div onClick={() => navigate(`/profile/${productOwner.id}`)}>
               <span>{productOwner && productOwner.firstname}</span>
               <span>{productOwner && productOwner.lastname}</span>
             </div>
-            <span>({productOwner && productOwner.username})</span>
+            <span onClick={() => navigate(`/profile/${productOwner.id}`)}>
+              ({productOwner && productOwner.username})
+            </span>
           </div>
         </div>
         <p className="product-price">${product.price}</p>

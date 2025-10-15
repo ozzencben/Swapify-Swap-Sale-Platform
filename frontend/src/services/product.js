@@ -91,6 +91,18 @@ export const updateProduct = async (id, productData) => {
   }
 };
 
+// --------------------------- REMOVE IMAGE ---------------------------
+export const removeProductImage = async (id, imageUrl) => {
+  try {
+    const res = await api.post(`/products/remove-image/${id}`, { imageUrl });
+    return res.data;
+  } catch (error) {
+    console.error("Error removing image:", error);
+    throw error;
+  }
+};
+
+
 // --------------------------- DELETE PRODUCT ---------------------------
 export const deleteProduct = async (id) => {
   try {

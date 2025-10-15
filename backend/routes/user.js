@@ -176,9 +176,14 @@ router.put('/update', auth, upload.single('profile_image'), async (req, res, nex
   try {
     const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
     const currentUser = userResult.rows[0];
+    if (!currentUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
 
     let imageUrl = currentUser.profile_image;
+
     if (req.file) {
+      // Yeni resmi Cloudinary'e yükle
       const uploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: 'profile_images',
         resource_type: 'image',
@@ -187,7 +192,9 @@ router.put('/update', auth, upload.single('profile_image'), async (req, res, nex
     }
 
     const updatedUser = await pool.query(
-      'UPDATE users SET firstname = $1, lastname = $2, username = $3, email = $4, phone = $5, profile_image = $6 WHERE id = $7 RETURNING *',
+      `UPDATE users
+         SET firstname = $1, lastname = $2, username = $3, email = $4, phone = $5, profile_image = $6
+         WHERE id = $7 RETURNING *`,
       [firstname, lastname, username, email, phone, imageUrl, req.user.id],
     );
 

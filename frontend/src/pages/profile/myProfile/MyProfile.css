@@ -1,0 +1,242 @@
+/* Genel container */
+.myProfile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Montserrat", sans-serif;
+  background-color: #ffffff;
+  color: #111111;
+  transition: all 0.3s ease;
+}
+
+/* Edit butonu */
+.edit-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.edit-button {
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #333333;
+}
+
+.edit-svgIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Kullanıcı info bölümü */
+.myProfile-infoSection {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.myProfile-userInfoBox {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.myProfile-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #111111;
+}
+
+.myProfile-iconWrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.myProfile-icon {
+  width: 50px;
+  height: 50px;
+  color: #111111;
+}
+
+.myProfile-textInfo h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.myProfile-textInfo p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #333333;
+}
+
+/* Navigation menü */
+.myProfile-navWrapper {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.myProfile-nav ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 20px;
+}
+
+.myProfile-link {
+  text-decoration: none;
+  color: #111111;
+  font-weight: 500;
+  padding: 10px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.myProfile-link:hover {
+  color: #555555;
+}
+
+.myProfile-link.active {
+  color: #111111;
+  font-weight: 600;
+}
+
+.myProfile-underline {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: #111111;
+  transition: all 0.3s ease;
+}
+
+/* Navigation section container */
+.navigation-section-container > div {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+  display: none;
+}
+
+.navigation-section-container > div.show {
+  opacity: 1;
+  transform: translateY(0);
+  display: block;
+}
+
+/* Ürün listesi */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.product-item {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 10px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-item-title {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.tips-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tip {
+  background-color: #f5f5f5;
+  color: #111111;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.chevron-box {
+  text-align: right;
+  margin-top: 5px;
+}
+
+.chevron {
+  font-size: 18px;
+  color: #111111;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .myProfile-userInfoBox {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .product-list {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .myProfile-container {
+    padding: 15px;
+  }
+
+  .myProfile-nav ul {
+    gap: 10px;
+  }
+
+  .product-item {
+    border-radius: 10px;
+  }
+
+  .product-image {
+    height: 130px;
+  }
+}

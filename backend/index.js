@@ -12,6 +12,7 @@ const notificationRoutes = require('./routes/notification');
 const productRoutes = require('./routes/product');
 const categoryRoutes = require('./routes/category');
 const favoriteRoutes = require('./routes/favorite');
+const addressRoutes = require('./routes/address');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -36,6 +37,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/favorites', favoriteRoutes);
+app.use('/api/addresses', addressRoutes);
 
 // global error handler
 app.use(errorHandler);

@@ -6,12 +6,11 @@
   padding: 20px;
   font-family: "Montserrat", sans-serif;
   justify-content: center;
-  position: relative;
 }
 
 .edit-container {
   position: absolute;
-  top: 20px;
+  top: 70px;
   right: 20px;
 }
 
