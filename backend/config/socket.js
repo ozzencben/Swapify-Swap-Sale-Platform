@@ -26,6 +26,12 @@ const initSocket = (server) => {
       socket.broadcast.emit('receive_message', data);
     });
 
+    //trades
+    socket.on("join_trade", (tradeId) => {
+      socket.join(tradeId);
+      console.log(`User joined trade ${tradeId}`);
+    });
+
     // Disconnect
     socket.on('disconnect', () => {
       for (let [userId, socketId] of onlineUsers.entries()) {

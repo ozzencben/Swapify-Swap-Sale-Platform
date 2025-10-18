@@ -67,8 +67,6 @@ const MyProfile = () => {
     const fetchFavorites = async () => {
       try {
         const res = await getUserFavorites();
-        console.log("favorites", res);
-
         const favorites = Array.isArray(res) ? res : res.favorites || [];
         setFavorites(favorites);
       } catch (error) {
@@ -206,10 +204,9 @@ const MyProfile = () => {
           </div>
         )}
 
-        {/* Trades */}
         {activeIndex === 2 && (
-          <div className="my-messages-container show">
-            <p>No trades yet.</p>
+          <div className="my-trades-container show">
+            <p>Settings.</p>
           </div>
         )}
 

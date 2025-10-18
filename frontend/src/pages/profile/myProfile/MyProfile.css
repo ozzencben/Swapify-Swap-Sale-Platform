@@ -210,6 +210,95 @@
   color: #111111;
 }
 
+/* Trade list container */
+.my-trades-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Her trade isteği için kutu */
+.trade-request-item-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.trade-request-item-user:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Profil resmi */
+.trade-request-item-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e5e5;
+}
+
+/* Profil resmi olmayanlar için ikon alanı */
+.trade-request-item-iconWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trade-request-item-icon {
+  font-size: 32px;
+  color: #999;
+}
+
+/* Kullanıcı adı ve mesaj */
+.trade-request-item-user p {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Kullanıcı adı (strong) */
+.trade-request-item-user strong {
+  color: #222;
+  font-weight: 600;
+}
+
+/* Trade durumu metni */
+.trade-status {
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-left: 4px;
+}
+
+/* Durumlara göre renkler */
+.trade-status.pending {
+  background-color: #fff4e5;
+  color: #f0ad4e;
+}
+
+.trade-status.accepted {
+  background-color: #e8f6e8;
+  color: #4caf50;
+}
+
+.trade-status.rejected {
+  background-color: #fdeaea;
+  color: #e74c3c;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .myProfile-userInfoBox {

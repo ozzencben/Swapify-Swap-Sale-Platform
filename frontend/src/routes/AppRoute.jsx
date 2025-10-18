@@ -13,6 +13,8 @@ import ProductDetail from "../pages/product-detail/ProductDetail";
 import MyProfile from "../pages/profile/myProfile/MyProfile";
 import EditProfile from "../pages/profile/edit-profile/EditProfile";
 import OtherUserProfile from "../pages/profile/OtherUserProfile/OtherUserProfile";
+import MakeAnOffer from "../pages/trade/make-an-offer/MakeAnOffer";
+import TradeChain from "../pages/trade/trade-chain/TradeChain";
 
 const AppRoute = () => {
   const location = useLocation();
@@ -34,6 +36,8 @@ const AppRoute = () => {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/profile/:id" element={<OtherUserProfile />} />
+        <Route path="/make-an-offer/:id" element={<MakeAnOffer />} />
+        <Route path="/trade-chain/:id" element={<TradeChain />} />
       </Routes>
     </>
   );

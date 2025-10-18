@@ -6,6 +6,7 @@ import Loader from "../../components/loader/Loader";
 import AuthContext from "../../context/auth/AuthContext";
 import { getUserById } from "../../services/auth";
 import { getProductById } from "../../services/product";
+import { createTrade, getExistingTrade } from "../../services/trades";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
@@ -15,7 +16,6 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const [productOwner, setProductOwner] = useState(null);
-  console.log("owner", productOwner);
 
   const [mainImage, setMainImage] = useState(null);
   const [modalImage, setModalImage] = useState(null);
@@ -40,6 +40,27 @@ const ProductDetail = () => {
 
     fetchProductById();
   }, [id]);
+
+  const handleCreateTrade = async () => {
+    try {
+      // Önce var olan trade var mı kontrol et
+      const existingTrade = await getExistingTrade(productOwner.id, product.id);
+
+      let trade;
+      if (existingTrade) {
+        trade = existingTrade;
+        console.log("trade", trade);
+      } else {
+        // Yeni trade oluştururken productId de gönder
+        trade = await createTrade(productOwner.id, product.id);
+        console.log("trade", trade);
+      }
+
+      navigate(`/make-an-offer/${trade.id}?productId=${product.id}`);
+    } catch (error) {
+      console.error("Error creating trade:", error);
+    }
+  };
 
   if (loading || !product) return <Loader />;
 
@@ -138,7 +159,7 @@ const ProductDetail = () => {
         </div>
 
         <div className="detail-buttons">
-          <button className="button">
+          <button className="button" onClick={handleCreateTrade}>
             <span className="button_lg">
               <span className="button_sl"></span>
               <span className="button_text">Make an Offer</span>

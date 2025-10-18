@@ -13,6 +13,7 @@ const productRoutes = require('./routes/product');
 const categoryRoutes = require('./routes/category');
 const favoriteRoutes = require('./routes/favorite');
 const addressRoutes = require('./routes/address');
+const tradeRoutes = require('./routes/trades');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -38,6 +39,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/addresses', addressRoutes);
+app.use('/api/trades', tradeRoutes);
+
 
 // global error handler
 app.use(errorHandler);

@@ -10,11 +10,12 @@ import {
   getUserNotifications,
   markNotificationAsRead,
 } from "../../services/notification";
+import { getExistingTrade } from "../../services/trades";
 import { socket } from "../../socket";
 import "./Notification.css";
 
 const Notification = () => {
-  const { user } = useContext(AuthContext);
+  const { user, navigate } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -60,17 +61,31 @@ const Notification = () => {
     return () => {
       socket.off("notification");
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.id]);
 
-  const handleMarkAsRead = async (id) => {
-    try {
-      await markNotificationAsRead(id);
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
-      );
-    } catch (err) {
-      console.error(err);
+  const handleItemClick = async (
+    productId,
+    offerOwnerId,
+    type,
+    notificationId
+  ) => {
+    await markNotificationAsRead(notificationId);
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notificationId ? { ...n, is_read: true } : n))
+    );
+
+    if (type === "offer") {
+      try {
+        const result = await getExistingTrade(offerOwnerId, productId);
+        navigate(`/trade-chain/${result.id}?productId=${productId}`);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (type === "favorite") {
+      navigate(`/product-detail/${productId}`);
     }
   };
 
@@ -109,7 +124,9 @@ const Notification = () => {
           <div
             key={n.id}
             className={`notification-item ${n.is_read ? "read" : "unread"}`}
-            onClick={() => handleMarkAsRead(n.id)}
+            onClick={() =>
+              handleItemClick(n.product_id, n.sender_id, n.type, n.id)
+            }
             onContextMenu={(e) => {
               e.preventDefault();
               handleDelete(n.id);

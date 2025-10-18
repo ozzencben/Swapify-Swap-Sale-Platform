@@ -1,0 +1,234 @@
+.make-offer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+@media (min-width: 800px) {
+  .make-offer-container {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 20px;
+  }
+}
+
+.requested-product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.requested-product-conitainer:hover {
+   
+}
+
+.requested-product-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.requested-product-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 20px 0;
+  width: 300px;
+  text-align: center;
+  font-family: var(--poiret);
+}
+
+.requested-product-price {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: var(--poiret);
+}
+
+.request-product-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+  gap: 20px;
+  font-family: var(--poiret);
+}
+
+.offer-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.offer-form-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.offer-form-item input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin: 20px 0;
+  font-size: 16px;
+}
+
+.offer-form-item textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin: 20px 0;
+  font-size: 16px;
+  resize: none;
+}
+
+.offer-form svg {
+  width: 20px;
+  height: 20px;
+  color: #555;
+}
+
+.offer-tips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #555;
+}
+
+.my-product-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.my-product-list::-webkit-scrollbar {
+  width: 0;
+}
+
+.my-product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+  gap: 20px;
+  font-family: var(--poiret);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.name-image {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.name-image:hover {
+  text-decoration: underline;
+}
+
+.my-product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.clear {
+  clear: both;
+}
+
+.checkBox {
+  display: block;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--black);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 2px #fff;
+}
+
+.checkBox div {
+  width: 60px;
+  height: 60px;
+  background-color: var(--black);
+  top: -52px;
+  left: -52px;
+  position: absolute;
+  transform: rotateZ(45deg);
+  z-index: 100;
+}
+
+.checkBox input[type="checkbox"]:checked + div {
+  left: -10px;
+  top: -10px;
+}
+
+.checkBox input[type="checkbox"] {
+  position: absolute;
+  left: 50px;
+  visibility: hidden;
+}
+
+.transition {
+  transition: 300ms ease;
+}
+
+.offer-form-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--black);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+.offer-form-button:hover {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.offer-form-button:disabled {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
